@@ -39,8 +39,7 @@ class api(test.Test):
 
     def test_version(self):
         self.log.info('Testing that the server returns its version')
-        r = self.get("/version/")
-        self.assertEquals(r.status_code, 200)
+        self.get("/version/")
 
     def test_jobstatus_list(self):
         self.log.info('Testing that the server has preloaded job statuses')
