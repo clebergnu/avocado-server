@@ -42,6 +42,23 @@ class api(test.Test):
         r = self.get("/version/")
         self.assertEquals(r.status_code, 200)
 
+    def test_jobstatus_list(self):
+        self.log.info('Testing that the server has preloaded job statuses')
+        r = self.get("/jobstatuses/")
+        json = r.json()
+        self.assertEquals(json["count"], 10)
+        names = [d.get("name") for d in json["results"]]
+        self.assertIn("TEST_NA", names)
+        self.assertIn("ABORT", names)
+        self.assertIn("ERROR", names)
+        self.assertIn("FAIL", names)
+        self.assertIn("WARN", names)
+        self.assertIn("PASS", names)
+        self.assertIn("START", names)
+        self.assertIn("ALERT", names)
+        self.assertIn("RUNNING", names)
+        self.assertIn("NOSTATUS", names)
+
     def test_jobs_empty(self):
         self.log.info('Testing that the server has no jobs')
         emtpy = {u'count': 0,
@@ -80,6 +97,7 @@ class api(test.Test):
 
     def action(self):
         self.test_version()
+        self.test_jobstatus_list()
         self.test_jobs_empty()
         self.test_jobs_add()
         self.test_jobs_del()
