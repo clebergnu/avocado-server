@@ -15,10 +15,13 @@ class api(test.Test):
                       'username': 'admin',
                       'password': '123'}
 
-    def get(self, path):
-        return requests.get(self.params.base_url + path,
-                            auth=(self.params.username,
-                                  self.params.password))
+    def get(self, path, status_code=200):
+        response = requests.get(self.params.base_url + path,
+                                auth=(self.params.username,
+                                      self.params.password))
+        if status_code is not None:
+            self.assertEquals(response.status_code, status_code)
+        return response
 
     def post(self, path, data):
         return requests.post(self.params.base_url + path,
