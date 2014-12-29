@@ -155,6 +155,11 @@ class SoftwareComponentKindViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.SoftwareComponentKindSerializer
 
 
+class SoftwareComponentArchViewSet(viewsets.ModelViewSet):
+    queryset = models.SoftwareComponentArch.objects.all()
+    serializer_class = serializers.SoftwareComponentArchSerializer
+
+
 @api_view(['GET'])
 @permission_classes((permissions.ReadOnlyPermission,))
 def version(request, format=None):
