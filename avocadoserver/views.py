@@ -150,6 +150,11 @@ class TestDataViewSet(viewsets.ModelViewSet):
         return Response({'status': 'test data added'})
 
 
+class SoftwareComponentKindViewSet(viewsets.ModelViewSet):
+    queryset = models.SoftwareComponentKind.objects.all()
+    serializer_class = serializers.SoftwareComponentKindSerializer
+
+
 @api_view(['GET'])
 @permission_classes((permissions.ReadOnlyPermission,))
 def version(request, format=None):
