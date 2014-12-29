@@ -63,7 +63,8 @@ class JobActivitySerializer(serializers.ModelSerializer):
 
 class TestActivitySerializer(serializers.ModelSerializer):
 
-    status = TestStatusSerializerField(read_only=False, required=False)
+    status = TestStatusSerializerField(
+        queryset=models.TestStatus.objects.all())
 
     class Meta:
         model = models.TestActivity
@@ -79,7 +80,8 @@ class TestDataSerializer(serializers.ModelSerializer):
 
 class TestSerializer(serializers.ModelSerializer):
 
-    status = TestStatusSerializerField(read_only=False, required=False)
+    status = TestStatusSerializerField(
+        queryset=models.TestStatus.objects.all())
 
     class Meta:
         model = models.Test
