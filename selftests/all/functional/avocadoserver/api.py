@@ -23,11 +23,14 @@ class api(test.Test):
             self.assertEquals(response.status_code, status_code)
         return response
 
-    def post(self, path, data):
-        return requests.post(self.params.base_url + path,
-                             auth=(self.params.username,
-                                   self.params.password),
-                             data=data)
+    def post(self, path, data, status_code=201):
+        response = requests.post(self.params.base_url + path,
+                                 auth=(self.params.username,
+                                       self.params.password),
+                                 data=data)
+        if status_code is not None:
+            self.assertEquals(response.status_code, status_code)
+        return response
 
     def delete(self, path):
         return requests.delete(self.params.base_url + path,
