@@ -22,43 +22,16 @@ from rest_framework import serializers
 # behaviour when used on Serializer
 #
 
-class JobPrioritySerializerField(serializers.RelatedField):
-
-    def from_native(self, data):
-        try:
-            obj = models.JobPriority.objects.get(name=data)
-        except models.JobPriority.DoesNotExist:
-            obj = None
-        return obj
-
-    def to_native(self, value):
-        if isinstance(value, models.JobPriority):
-            return "%s" % value.name
-
-
-class JobStatusSerializerField(serializers.RelatedField):
-
-    def from_native(self, data):
-        try:
-            obj = models.JobStatus.objects.get(name=data)
-        except models.JobStatus.DoesNotExist:
-            obj = None
-        return obj
-
-    def to_native(self, value):
-        return "%s" % value.name
-
-
 class TestStatusSerializerField(serializers.RelatedField):
 
-    def from_native(self, data):
+    def to_internal_value(self, data):
         try:
             obj = models.TestStatus.objects.get(name=data)
         except models.TestStatus.DoesNotExist:
             obj = None
         return obj
 
-    def to_native(self, value):
+    def to_representation(self, value):
         return "%s" % value.name
 
 
@@ -116,8 +89,13 @@ class TestSerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
 
-    priority = JobPrioritySerializerField(read_only=False, required=False)
-    status = JobStatusSerializerField(read_only=False, required=False)
+    priority = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=models.JobPriority.objects.all())
+
+    status = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=models.JobStatus.objects.all())
 
     # pylint: disable=E1123
     activities = JobActivitySerializer(many=True, read_only=True)
