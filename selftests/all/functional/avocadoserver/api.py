@@ -59,6 +59,12 @@ class api(test.Test):
         self.assertIn("RUNNING", names)
         self.assertIn("NOSTATUS", names)
 
+    def test_jobstatus_noadd(self):
+        self.log.info('Testing that the server does not allow adding a new job '
+                      'status')
+        data = {"name": "NEW_STATUS"}
+        self.post("/jobstatuses/", data, 403)
+
     def test_teststatus_list(self):
         self.log.info('Testing that the server has preloaded test statuses')
         r = self.get("/teststatuses/")
@@ -110,6 +116,7 @@ class api(test.Test):
     def action(self):
         self.test_version()
         self.test_jobstatus_list()
+        self.test_jobstatus_noadd()
         self.test_teststatus_list()
         self.test_jobs_empty()
         self.test_jobs_add()
